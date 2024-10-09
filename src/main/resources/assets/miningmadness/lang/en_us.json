@@ -1,0 +1,47 @@
+{
+  "block.miningmadness.quarry": "Quarry",
+  "block.miningmadness.infusing_station": "Infusing Station",
+
+  "item.miningmadness.gem_of_focus": "Gem of Focus",
+  "item.miningmadness.copper_machine_frame": "Copper Machine Frame",
+
+  "miningmadness.quarry_menu": "Basic Quarry",
+
+  "miningmadness.status.active": "Active",
+  "miningmadness.status.inactive": "Inactive",
+  "miningmadness.status.status_pre": "Status",
+  "miningmadness.status.not_enough_fe": "Not enough energy!",
+  "miningmadness.status.cant_gain_infusion": "Can't gain new infusion from recipe!",
+  "miningmadness.status.conflicting_infusion": "Conflicting infusions!",
+
+  "miningmadness.redstone_status.high": "High",
+  "miningmadness.redstone_status.low": "Low",
+  "miningmadness.redstone_status.pulse": "Pulse",
+  "miningmadness.redstone_status.ignore": "Ignore",
+  "miningmadness.redstone.tooltip_pre": "Redstone mode",
+
+  "miningmadness.area_toggle.tooltip_pre": "Display working area",
+  "miningmadness.area_status.off": "off",
+  "miningmadness.area_status.on": "on",
+
+  "miningmadness.creative_tab.title": "Mining Madness",
+
+  "miningmadness.infusion": "Infusion",
+  "miningmadness.infusion.type": "Type",
+  "miningmadness.infusion.tier_points": "Tier Points",
+  "miningmadness.infusion.tier": "Tier",
+  "miningmadness.infusion.max_tier": "Max",
+  "miningmadness.infusion.type_efficiency": "Efficiency",
+  "miningmadness.infusion.type_energy_capacity": "Energy Capacity",
+  "miningmadness.infusion.type_fortune": "Fortune",
+  "miningmadness.infusion.type_range": "Range",
+  "miningmadness.infusion.type_silk_touch": "Silk Touch",
+  "miningmadness.infusion.type_speed": "Speed",
+
+  "tooltip.miningmadness.press": "Press",
+  "tooltip.miningmadness.for_infusion_info": "for infusion information",
+  "tooltip.miningmadness.for_more_info": "for more information",
+  "tooltip.miningmadness.gem_of_focus_description": "Used to infuse an Infusing Station itself.",
+
+  "miningmadness.jei.infusing_title": "Infusion"
+}

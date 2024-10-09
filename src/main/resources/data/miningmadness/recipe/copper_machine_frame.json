@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "group": "miningmadness",
+  "key": {
+    "i": {
+      "item": "minecraft:iron_ingot"
+    },
+    "c": {
+      "item": "minecraft:copper_ingot"
+    },
+    "r": {
+      "item": "minecraft:redstone"
+    }
+  },
+  "pattern": [
+    "ccc",
+    "crc",
+    "iii"
+  ],
+  "result": {
+    "count": 1,
+    "id": "miningmadness:copper_machine_frame"
+  }
+}

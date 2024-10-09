@@ -1,0 +1,8 @@
+{
+  "replace": false,
+  "values": [
+    "miningmadness:quarry",
+    "miningmadness:infusing_station",
+    "miningmadness:gem_of_focus"
+  ]
+}

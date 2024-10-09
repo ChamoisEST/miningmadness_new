@@ -1,0 +1,15 @@
+{
+  "type": "miningmadness:infusing",
+  "ingredients": [
+    {
+      "tag": "miningmadness:infusion/infusable"
+    },
+    {
+      "item": "minecraft:redstone"
+    }
+  ],
+  "output_infusion": {
+      "miningmadness:energy_capacity": 5
+  },
+  "energy_used": 4000
+}

@@ -1,0 +1,28 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "group": "miningmadness",
+  "key": {
+    "i": {
+      "item": "minecraft:iron_ingot"
+    },
+    "m": {
+      "item": "miningmadness:copper_machine_frame"
+    },
+    "r": {
+      "item": "minecraft:redstone"
+    },
+    "g": {
+      "item": "minecraft:glass"
+    }
+  },
+  "pattern": [
+    " r ",
+    "gmg",
+    "iii"
+  ],
+  "result": {
+    "count": 1,
+    "id": "miningmadness:infusing_station"
+  }
+}

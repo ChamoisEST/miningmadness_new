@@ -1,0 +1,15 @@
+{
+  "type": "miningmadness:infusing",
+  "ingredients": [
+    {
+      "tag": "miningmadness:infusion/infusable"
+    },
+    {
+      "item": "minecraft:emerald"
+    }
+  ],
+  "output_infusion": {
+      "miningmadness:silk_touch": 25
+  },
+  "energy_used": 10000
+}

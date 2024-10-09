@@ -1,0 +1,26 @@
+{
+  "type": "miningmadness:infusing",
+  "ingredients": [
+    {
+      "item": "minecraft:quartz"
+    },
+    {
+      "item": "minecraft:redstone"
+    },
+    {
+      "item": "minecraft:redstone"
+    },
+    {
+      "item": "minecraft:redstone"
+    },
+    {
+      "item": "minecraft:redstone"
+    }
+  ],
+  "output": {
+    "count": 1,
+    "id": "miningmadness:gem_of_focus"
+  },
+  "output_infusion": {},
+  "energy_used": 4000
+}

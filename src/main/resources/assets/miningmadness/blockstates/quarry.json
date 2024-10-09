@@ -1,0 +1,34 @@
+{
+  "variants": {
+    "facing=east,lit=false": {
+      "model": "miningmadness:block/quarry",
+      "y": 90
+    },
+    "facing=east,lit=true": {
+      "model": "miningmadness:block/quarry_on",
+      "y": 90
+    },
+    "facing=north,lit=false": {
+      "model": "miningmadness:block/quarry"
+    },
+    "facing=north,lit=true": {
+      "model": "miningmadness:block/quarry_on"
+    },
+    "facing=south,lit=false": {
+      "model": "miningmadness:block/quarry",
+      "y": 180
+    },
+    "facing=south,lit=true": {
+      "model": "miningmadness:block/quarry_on",
+      "y": 180
+    },
+    "facing=west,lit=false": {
+      "model": "miningmadness:block/quarry",
+      "y": 270
+    },
+    "facing=west,lit=true": {
+      "model": "miningmadness:block/quarry_on",
+      "y": 270
+    }
+  }
+}

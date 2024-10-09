@@ -1,0 +1,15 @@
+{
+  "type": "miningmadness:infusing",
+  "ingredients": [
+    {
+      "tag": "miningmadness:infusion/infusable"
+    },
+    {
+      "item": "minecraft:lapis_lazuli"
+    }
+  ],
+  "output_infusion": {
+      "miningmadness:fortune": 5
+  },
+  "energy_used": 4000
+}

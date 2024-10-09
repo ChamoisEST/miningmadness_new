@@ -1,0 +1,9 @@
+{
+  "parent": "minecraft:block/orientable_with_bottom",
+  "textures": {
+    "bottom": "miningmadness:item/copper_machine_frame_top",
+    "front": "miningmadness:item/copper_machine_frame",
+    "side": "miningmadness:item/copper_machine_frame",
+    "top": "miningmadness:item/copper_machine_frame_top"
+  }
+}
