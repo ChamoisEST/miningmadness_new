@@ -13,7 +13,7 @@ public class RenderTypes extends RenderType {
                     .setLayeringState(VIEW_OFFSET_Z_LAYERING)  // View offset Z layering
                     .setTransparencyState(TRANSLUCENT_TRANSPARENCY)  // Enable translucent transparency
                     .setTextureState(NO_TEXTURE)  // No texture state
-                    .setDepthTestState(LEQUAL_DEPTH_TEST)  // Depth test state
+                    .setDepthTestState(GREATER_DEPTH_TEST)  // Depth test state
                     .setCullState(NO_CULL)
                     .setLightmapState(NO_LIGHTMAP)
                     .setWriteMaskState(COLOR_WRITE)

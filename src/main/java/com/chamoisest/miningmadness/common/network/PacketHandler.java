@@ -14,9 +14,11 @@ public class PacketHandler {
         registrar.playToServer(MachineStatusPayload.TYPE, MachineStatusPayload.STREAM_CODEC, MachineStatusPacket.get()::handle);
         registrar.playToServer(RedstoneStatusPayload.TYPE, RedstoneStatusPayload.STREAM_CODEC, RedstoneStatusPacket.get()::handle);
         registrar.playToServer(AreaDisplayButtonPayload.TYPE, AreaDisplayButtonPayload.STREAM_CODEC, AreaDisplayButtonPacket.get()::handle);
+        registrar.playToServer(RangeButtonPayload.TYPE, RangeButtonPayload.STREAM_CODEC, RangeButtonPacket.get()::handle);
 
         registrar.playToClient(InfusionSyncToClientPayload.TYPE, InfusionSyncToClientPayload.STREAM_CODEC, InfusionSyncToClientPacket.get()::handle);
         registrar.playToClient(EnergySyncToClientPayload.TYPE, EnergySyncToClientPayload.STREAM_CODEC, EnergySyncToClientPacket.get()::handle);
         registrar.playToClient(InfusionCraftingSyncToClientPayload.TYPE, InfusionCraftingSyncToClientPayload.STREAM_CODEC, InfusionCraftingSyncToClientPacket.get()::handle);
+        registrar.playToClient(RangeProjectorSyncToClientPayload.TYPE, RangeProjectorSyncToClientPayload.STREAM_CODEC, RangeProjectorSyncToClientPacket.get()::handle);
     }
 }

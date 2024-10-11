@@ -1,12 +1,10 @@
 package com.chamoisest.miningmadness.common.blockentities;
 
-import com.chamoisest.miningmadness.common.blockentities.base.BEPacketSyncEnum;
-import com.chamoisest.miningmadness.common.blockentities.base.BaseBE;
+import com.chamoisest.miningmadness.common.blockentities.base.enums.BEPacketSyncEnum;
 import com.chamoisest.miningmadness.common.blockentities.base.WorkingAreaBE;
 import com.chamoisest.miningmadness.common.blockentities.data.RedstoneData;
 import com.chamoisest.miningmadness.common.blockentities.data.StatusData;
 import com.chamoisest.miningmadness.common.blockentities.interfaces.*;
-import com.chamoisest.miningmadness.common.blocks.QuarryBlock;
 import com.chamoisest.miningmadness.common.capabilities.AdaptedEnergyStorage;
 import com.chamoisest.miningmadness.common.capabilities.CombinedItemHandler;
 import com.chamoisest.miningmadness.common.capabilities.infusion.InfusionStorage;
@@ -38,12 +36,12 @@ public class QuarryBE extends WorkingAreaBE implements EnergyHandlerBE, ItemHand
         this.status = StatusData.Status.INACTIVE;
         this.redstoneStatus = RedstoneData.RedstoneStatus.IGNORE;
 
-        setArea(4, 4, 5);
+        setMaxArea(50, 50);
         initArea();
     }
 
     public void handleTicks(){
-        System.out.println(this.getWorkingArea());
+
     }
 
     @Override

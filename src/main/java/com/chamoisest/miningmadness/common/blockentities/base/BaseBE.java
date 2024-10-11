@@ -1,6 +1,7 @@
 package com.chamoisest.miningmadness.common.blockentities.base;
 
 import com.chamoisest.miningmadness.common.blockentities.InfusingStationBE;
+import com.chamoisest.miningmadness.common.blockentities.base.enums.BEPacketSyncEnum;
 import com.chamoisest.miningmadness.common.blockentities.data.RedstoneData;
 import com.chamoisest.miningmadness.common.blockentities.data.StatusData;
 import com.chamoisest.miningmadness.common.blockentities.interfaces.*;
@@ -10,11 +11,10 @@ import com.chamoisest.miningmadness.util.PacketUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.Connection;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -67,8 +67,8 @@ public abstract class BaseBE extends BlockEntity {
     public void markDirty(){
         setChanged();
 
-        if(level != null && level.isClientSide()){
-            level.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), 2);
+        if(level != null){
+            level.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), 3);
         }
     }
 
@@ -87,6 +87,13 @@ public abstract class BaseBE extends BlockEntity {
     @Override
     public @Nullable Packet<ClientGamePacketListener> getUpdatePacket() {
         return ClientboundBlockEntityDataPacket.create(this);
+    }
+
+    @Override
+    public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt, HolderLookup.Provider lookupProvider) {
+        this.loadAdditional(pkt.getTag(), lookupProvider);
+        if(this instanceof WorkingAreaBE areaBE)
+            areaBE.initArea();
     }
 
     @Override

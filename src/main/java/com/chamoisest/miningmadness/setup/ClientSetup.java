@@ -6,6 +6,7 @@ import com.chamoisest.miningmadness.client.renderers.blockentity.QuarryBER;
 import com.chamoisest.miningmadness.client.renderers.blockentity.base.AreaDisplayBER;
 import com.chamoisest.miningmadness.client.screens.QuarryScreen;
 import com.chamoisest.miningmadness.client.screens.InfusingStationScreen;
+import com.chamoisest.miningmadness.client.screens.RangeProjectorScreen;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -25,6 +26,7 @@ public class ClientSetup {
     public static void registerScreens(RegisterMenuScreensEvent event) {
         event.register(Registration.QUARRY_MENU.get(), QuarryScreen::new);
         event.register(Registration.INFUSING_STATION_MENU.get(), InfusingStationScreen::new);
+        event.register(Registration.RANGE_PROJECTOR_MENU.get(), RangeProjectorScreen::new);
     }
 
     @SubscribeEvent

@@ -1,7 +1,6 @@
 package com.chamoisest.miningmadness.common.capabilities;
 
-import com.chamoisest.miningmadness.common.blockentities.base.BEPacketSyncEnum;
-import com.chamoisest.miningmadness.common.blockentities.base.BaseBE;
+import com.chamoisest.miningmadness.common.blockentities.base.enums.BEPacketSyncEnum;
 import com.chamoisest.miningmadness.common.blockentities.interfaces.EnergyHandlerBE;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;

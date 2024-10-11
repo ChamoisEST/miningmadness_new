@@ -1,6 +1,8 @@
 package com.chamoisest.miningmadness.common.blocks.base;
 
+import com.chamoisest.miningmadness.common.blockentities.RangeProjectorBE;
 import com.chamoisest.miningmadness.common.blockentities.base.BaseBE;
+import com.chamoisest.miningmadness.common.blockentities.base.WorkingAreaBE;
 import com.chamoisest.miningmadness.common.blockentities.data.RedstoneData;
 import com.chamoisest.miningmadness.common.blockentities.interfaces.*;
 import com.chamoisest.miningmadness.common.capabilities.infusion.IInfusionStorage;
@@ -78,6 +80,10 @@ public abstract class BaseMachineBlock extends Block implements EntityBlock {
                 base.needInfusionUpdate = true;
             }
 
+            if(blockEntity instanceof RangeProjectorBE be){
+                be.needsSync = true;
+            }
+
             return InteractionResult.CONSUME;
         }
     }
@@ -90,6 +96,9 @@ public abstract class BaseMachineBlock extends Block implements EntityBlock {
             return (lvl, pos, st, be) -> {
                 if(be instanceof BaseBE tickableBE) {
                     tickableBE.tickServer();
+                }
+                if(be instanceof RangeProjectorBE rangeBE) {
+                    rangeBE.handleTicks();
                 }
             };
         }
@@ -111,6 +120,17 @@ public abstract class BaseMachineBlock extends Block implements EntityBlock {
             if(blockEntity instanceof RedstoneControlledBE redstoneBe){
                 if(stack.get(MiningMadnessDataComponents.MACHINE_REDSTONE_STATUS) != null){
                     redstoneBe.setRedstoneStatus(RedstoneData.RedstoneStatus.getEnumValue(stack.get(MiningMadnessDataComponents.MACHINE_REDSTONE_STATUS)));
+                }
+            }
+
+            if(blockEntity instanceof WorkingAreaBE workingAreaBE){
+                if(stack.get(MiningMadnessDataComponents.AREA_MACHINE_OFFSET) != null){
+                    workingAreaBE.setOffset(stack.get(MiningMadnessDataComponents.AREA_MACHINE_OFFSET));
+                }
+
+                if(stack.get(MiningMadnessDataComponents.AREA_MACHINE_WA) != null){
+                    BlockPos workArea = stack.get(MiningMadnessDataComponents.AREA_MACHINE_WA);
+                    workingAreaBE.setArea(workArea.getX(), workArea.getZ(), workArea.getY());
                 }
             }
 
@@ -153,6 +173,11 @@ public abstract class BaseMachineBlock extends Block implements EntityBlock {
             itemStack.set(MiningMadnessDataComponents.MACHINE_REDSTONE_STATUS, redstoneBe.getRedstoneStatus().getNumericalValue());
         }
 
+        if(be instanceof WorkingAreaBE workingAreaBE){
+            itemStack.set(MiningMadnessDataComponents.AREA_MACHINE_OFFSET, workingAreaBE.getOffset());
+            itemStack.set(MiningMadnessDataComponents.AREA_MACHINE_WA, new BlockPos(workingAreaBE.getAreaWidth(), workingAreaBE.getAreaDepth(), workingAreaBE.getAreaHeight()));
+        }
+
         if(be instanceof InfusionHandlerBE infusionBe){
             IInfusionStorage infusionCap = itemStack.getCapability(MiningMadnessCapabilities.InfusionStorage.ITEM);
             if(infusionCap != null) {
@@ -170,6 +195,8 @@ public abstract class BaseMachineBlock extends Block implements EntityBlock {
         stack.remove(MiningMadnessDataComponents.MACHINE_ENERGY);
         stack.remove(MiningMadnessDataComponents.MACHINE_ENERGY_CAPACITY);
         stack.remove(MiningMadnessDataComponents.MACHINE_REDSTONE_STATUS);
+        stack.remove(MiningMadnessDataComponents.AREA_MACHINE_OFFSET);
+        stack.remove(MiningMadnessDataComponents.AREA_MACHINE_WA);
     }
 
 

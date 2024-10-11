@@ -3,16 +3,19 @@ package com.chamoisest.miningmadness.setup;
 import com.chamoisest.miningmadness.MiningMadness;
 import com.chamoisest.miningmadness.common.blockentities.QuarryBE;
 import com.chamoisest.miningmadness.common.blockentities.InfusingStationBE;
+import com.chamoisest.miningmadness.common.blockentities.RangeProjectorBE;
 import com.chamoisest.miningmadness.common.blockentities.interfaces.EnergyHandlerBE;
 import com.chamoisest.miningmadness.common.blockentities.interfaces.InfusionHandlerBE;
 import com.chamoisest.miningmadness.common.blocks.QuarryBlock;
 import com.chamoisest.miningmadness.common.blocks.InfusingStationBlock;
+import com.chamoisest.miningmadness.common.blocks.RangeProjectorBlock;
 import com.chamoisest.miningmadness.common.capabilities.AdaptedEnergyStorage;
 import com.chamoisest.miningmadness.common.capabilities.infusion.InfusionStorage;
 import com.chamoisest.miningmadness.common.capabilities.infusion.infusions.*;
 import com.chamoisest.miningmadness.common.capabilities.infusion.infusions.base.Infusion;
 import com.chamoisest.miningmadness.common.containers.QuarryMenu;
 import com.chamoisest.miningmadness.common.containers.InfusingStationMenu;
+import com.chamoisest.miningmadness.common.containers.RangeProjectorMenu;
 import com.chamoisest.miningmadness.common.items.GemOfFocusItem;
 import com.chamoisest.miningmadness.common.items.block.BaseMachineBlockItem;
 import com.chamoisest.miningmadness.common.recipes.infusing.InfusingRecipe;
@@ -50,12 +53,16 @@ public class Registration {
             QuarryBlock::new);
     public static final DeferredBlock<InfusingStationBlock> INFUSING_STATION = registerMachineBlock("infusing_station",
             InfusingStationBlock::new);
+    public static final DeferredBlock<RangeProjectorBlock> RANGE_PROJECTOR = registerMachineBlock("range_projector",
+            RangeProjectorBlock::new);
 
     //BLOCK ENTITIES
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<QuarryBE>> QUARRY_BE = BLOCK_ENTITIES.register("quarry_be",
             () -> BlockEntityType.Builder.of(QuarryBE::new, QUARRY.get()).build(null));
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<InfusingStationBE>> INFUSING_STATION_BE = BLOCK_ENTITIES.register("infusing_station_be",
             () -> BlockEntityType.Builder.of(InfusingStationBE::new, INFUSING_STATION.get()).build(null));
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<RangeProjectorBE>> RANGE_PROJECTOR_BE = BLOCK_ENTITIES.register("range_projector_be",
+            () -> BlockEntityType.Builder.of(RangeProjectorBE::new, RANGE_PROJECTOR.get()).build(null));
 
     //ITEMS
     public static final Supplier<GemOfFocusItem> GEM_OF_FOCUS = ITEMS.register("gem_of_focus", GemOfFocusItem::new);
@@ -74,6 +81,8 @@ public class Registration {
             () -> IMenuTypeExtension.create(QuarryMenu::new));
     public static final DeferredHolder<MenuType<?>, MenuType<InfusingStationMenu>> INFUSING_STATION_MENU = MENUS.register("infusing_station_menu",
             () -> IMenuTypeExtension.create(InfusingStationMenu::new));
+    public static final DeferredHolder<MenuType<?>, MenuType<RangeProjectorMenu>> RANGE_PROJECTOR_MENU = MENUS.register("range_projector_menu",
+            () -> IMenuTypeExtension.create(RangeProjectorMenu::new));
 
     //RECIPE TYPES
     public static final Supplier<RecipeType<InfusingRecipe>> INFUSING =

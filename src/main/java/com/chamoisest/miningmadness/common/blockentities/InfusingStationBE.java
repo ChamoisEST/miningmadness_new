@@ -1,6 +1,6 @@
 package com.chamoisest.miningmadness.common.blockentities;
 
-import com.chamoisest.miningmadness.common.blockentities.base.BEPacketSyncEnum;
+import com.chamoisest.miningmadness.common.blockentities.base.enums.BEPacketSyncEnum;
 import com.chamoisest.miningmadness.common.blockentities.base.BaseBE;
 import com.chamoisest.miningmadness.common.blockentities.data.RedstoneData;
 import com.chamoisest.miningmadness.common.blockentities.data.StatusData;

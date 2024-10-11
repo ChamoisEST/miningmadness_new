@@ -1,20 +1,29 @@
 package com.chamoisest.miningmadness.common.blockentities.base;
 
 import com.chamoisest.miningmadness.common.blockentities.data.AreaData;
-import com.chamoisest.miningmadness.common.blocks.QuarryBlock;
 import com.chamoisest.miningmadness.common.blocks.base.BaseMachineBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtUtils;
+import net.minecraft.network.Connection;
+import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
+import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
+import org.jetbrains.annotations.Nullable;
 
 public abstract class WorkingAreaBE extends BaseBE{
     protected AABB workingArea;
     protected BlockPos offset;
+
+    protected int maxAreaWidth;
+    protected int maxAreaHeight;
+    protected int maxAreaDepth;
 
     protected int areaWidth = 0;
     protected int areaHeight = 0;
@@ -39,31 +48,80 @@ public abstract class WorkingAreaBE extends BaseBE{
 
     }
 
-    protected void setArea(int areaWidth, int areaHeight, int areaDepth) {
+    protected void setMaxArea(int maxWidth, int maxHeight) {
+        this.maxAreaWidth = maxWidth;
+        this.maxAreaHeight = maxHeight;
+        this.maxAreaDepth = getBlockPos().getY() + 64 + this.offset.getY();
+    }
+
+    protected void setMaxArea(int maxWidth, int maxHeight, int maxDepth){
+        this.maxAreaWidth = maxWidth;
+        this.maxAreaHeight = maxHeight;
+        this.maxAreaDepth = maxDepth;
+    }
+
+    public void setArea(int areaWidth, int areaHeight, int areaDepth) {
         this.areaWidth = areaWidth;
         this.areaHeight = areaHeight;
         this.areaDepth = areaDepth;
+
+        markDirty();
     }
 
-    protected void setOffset(BlockPos offset) {
+    public void setOffset(BlockPos offset) {
         this.offset = offset;
+
+        markDirty();
     }
 
     protected void initArea() {
-        if(this.areaWidth > 0 && this.areaHeight > 0 && this.areaDepth > 0) {
+        if(this.areaWidth <= 0) areaWidth = this.maxAreaWidth;
+        if(this.areaHeight <= 0) areaHeight = this.maxAreaHeight;
+        if(this.areaDepth <= 0) areaDepth = this.maxAreaDepth;
+
+        BlockPos startPos = new BlockPos(0, 0, 0).relative(this.facing, 1);
+        BlockPos endPos = new BlockPos(0,0,0);
+
+        if(this.facing == Direction.EAST || this.facing == Direction.WEST) {
             double widthSplit = (double) this.areaWidth / 2;
             int widthOffset = (int) Math.floor(widthSplit);
 
-            BlockPos startPos = new BlockPos(this.offset.getX(), this.offset.getY() + 1, this.offset.getZ());
-            startPos = startPos.relative(this.facing.getCounterClockWise(), widthOffset);
-
-            BlockPos endPos = startPos.relative(this.facing.getClockWise(), this.areaWidth);
-            endPos = endPos.relative(Direction.DOWN, this.areaDepth);
+            startPos = startPos.south(widthOffset);
+            endPos = startPos.north(this.areaWidth);
             endPos = endPos.relative(this.facing, this.areaHeight);
+        }else if(this.facing == Direction.NORTH || this.facing == Direction.SOUTH) {
+            double heightSplit = (double) this.areaHeight / 2;
+            int heightOffset = (int) Math.floor(heightSplit);
 
-            this.workingArea = new AABB(startPos.getX(), startPos.getY(), startPos.getZ(), endPos.getX(), endPos.getY(), endPos.getZ());
-
+            startPos = startPos.east(heightOffset);
+            endPos = startPos.west(this.areaHeight);
+            endPos = endPos.relative(this.facing, this.areaWidth);
         }
+
+        endPos = endPos.below(this.areaDepth);
+
+        this.workingArea = AABB.encapsulatingFullBlocks(startPos, endPos);
+        fixAreaSize();
+        this.workingArea = this.workingArea.move(offset);
+    }
+
+    //AABB.encapsulatingFullBlocks messes up the area size, but is necessary to fix the positions of the area. This fixes the area size.
+    public void fixAreaSize(){
+        double minX = this.workingArea.minX;
+        double minY = this.workingArea.minY;
+        double minZ = this.workingArea.minZ;
+        double maxX = this.workingArea.maxX;
+        double maxY = this.workingArea.maxY;
+        double maxZ = this.workingArea.maxZ;
+
+        double yDiff = this.areaDepth - Math.abs(this.workingArea.minY - this.workingArea.maxY);
+        double xDiff = this.areaHeight - Math.abs(this.workingArea.minX - this.workingArea.maxX);
+        double zDiff = this.areaWidth - Math.abs(this.workingArea.minZ - this.workingArea.maxZ);
+
+        if(Math.abs(minX) >= Math.abs(maxX)){ minX -= xDiff; } else maxX += xDiff;
+        if(Math.abs(minY) >= Math.abs(maxY)){ minY -= yDiff; } else maxY += yDiff;
+        if(Math.abs(minZ) >= Math.abs(maxZ)){ minZ -= zDiff; } else maxZ += zDiff;
+        this.workingArea = new AABB(minX, minY, minZ, maxX, maxY, maxZ);
     }
 
     public AABB getWorkingArea() {
@@ -80,6 +138,34 @@ public abstract class WorkingAreaBE extends BaseBE{
 
     public AreaData getAreaData(){
         return this.areaData;
+    }
+
+    public int getAreaWidth(){
+        return this.areaWidth;
+    }
+
+    public int getAreaHeight(){
+        return this.areaHeight;
+    }
+
+    public int getAreaDepth(){
+        return this.areaDepth;
+    }
+
+    public int getAreaMaxWidth(){
+        return this.maxAreaWidth;
+    }
+
+    public int getAreaMaxHeight(){
+        return this.maxAreaHeight;
+    }
+
+    public int getAreaMaxDepth(){
+        return this.maxAreaDepth;
+    }
+
+    public BlockPos getOffset(){
+        return this.offset;
     }
 
     @Override
@@ -117,6 +203,8 @@ public abstract class WorkingAreaBE extends BaseBE{
         if(tag.contains("displayArea")) {
             this.displayArea = tag.getBoolean("displayArea");
         }
+
+        initArea();
 
         super.loadAdditional(tag, registries);
     }

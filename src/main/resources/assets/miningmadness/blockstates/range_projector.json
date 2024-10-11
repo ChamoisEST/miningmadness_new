@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "miningmadness:block/range_projector",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "miningmadness:block/range_projector"
+    },
+    "facing=south": {
+      "model": "miningmadness:block/range_projector",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "miningmadness:block/range_projector",
+      "y": 270
+    }
+  }
+}

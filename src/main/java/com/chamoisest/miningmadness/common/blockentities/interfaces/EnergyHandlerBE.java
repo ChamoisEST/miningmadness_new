@@ -1,6 +1,6 @@
 package com.chamoisest.miningmadness.common.blockentities.interfaces;
 
-import com.chamoisest.miningmadness.common.blockentities.base.BEPacketSyncEnum;
+import com.chamoisest.miningmadness.common.blockentities.base.enums.BEPacketSyncEnum;
 import com.chamoisest.miningmadness.common.capabilities.AdaptedEnergyStorage;
 
 public interface EnergyHandlerBE {

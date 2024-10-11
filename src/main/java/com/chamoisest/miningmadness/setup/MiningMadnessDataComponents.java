@@ -2,6 +2,7 @@ package com.chamoisest.miningmadness.setup;
 
 import com.chamoisest.miningmadness.MiningMadness;
 import com.mojang.serialization.Codec;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.registries.Registries;
 import net.neoforged.neoforge.registries.DeferredHolder;
@@ -21,6 +22,12 @@ public class MiningMadnessDataComponents {
 
     public static final DeferredHolder<DataComponentType<?>, DataComponentType<Integer>> MACHINE_REDSTONE_STATUS = register("machine_redstone_status",
             builder -> builder.persistent(Codec.INT));
+
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<BlockPos>> AREA_MACHINE_WA = register("area_machine_wa",
+            builder -> builder.persistent(BlockPos.CODEC));
+
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<BlockPos>> AREA_MACHINE_OFFSET = register("area_machine_offset",
+            builder -> builder.persistent(BlockPos.CODEC));
 
     public static final DeferredHolder<DataComponentType<?>, DataComponentType<Map<String, Map<String, Integer>>>> INFUSION = register("infusion",
             builder -> builder.persistent(Codec.unboundedMap(Codec.STRING, Codec.unboundedMap(Codec.STRING, Codec.INT))));

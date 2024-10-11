@@ -1,5 +1,7 @@
 package com.chamoisest.miningmadness.util;
 
+import com.chamoisest.miningmadness.client.screens.elements.RangeEditButton;
+import com.chamoisest.miningmadness.common.blockentities.base.enums.AreaPosEnum;
 import com.chamoisest.miningmadness.common.network.data.*;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
@@ -38,6 +40,18 @@ public class PacketUtil {
         }
     }
 
+    public static void syncRangeProjector(Level level, BlockPos pos, boolean isConnected, int width, int depth, int height, BlockPos offset){
+        if(level != null && !level.isClientSide()){
+            ServerLevel serverLevel = (ServerLevel) level;
+
+            PacketDistributor.sendToPlayersTrackingChunk(
+                    serverLevel,
+                    level.getChunk(pos).getPos(),
+                    new RangeProjectorSyncToClientPayload(pos, isConnected, width, depth, height, offset)
+            );
+        }
+    }
+
     //Client to server
     public static void syncMachineStatus(int status){
         PacketDistributor.sendToServer(new MachineStatusPayload(status));
@@ -49,5 +63,9 @@ public class PacketUtil {
 
     public static void syncAreaDisplayToggle(boolean toggleValue){
         PacketDistributor.sendToServer(new AreaDisplayButtonPayload(toggleValue));
+    }
+
+    public static void syncAreaRange(RangeEditButton.RangeEditButtonType type, AreaPosEnum posEnum) {
+        PacketDistributor.sendToServer(new RangeButtonPayload(type.ordinal(), posEnum.ordinal()));
     }
 }
