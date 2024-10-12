@@ -125,12 +125,12 @@ public abstract class BaseMachineBlock extends Block implements EntityBlock {
 
             if(blockEntity instanceof WorkingAreaBE workingAreaBE){
                 if(stack.get(MiningMadnessDataComponents.AREA_MACHINE_OFFSET) != null){
-                    workingAreaBE.setOffset(stack.get(MiningMadnessDataComponents.AREA_MACHINE_OFFSET));
+                    workingAreaBE.setOffset(stack.get(MiningMadnessDataComponents.AREA_MACHINE_OFFSET), false);
                 }
 
                 if(stack.get(MiningMadnessDataComponents.AREA_MACHINE_WA) != null){
                     BlockPos workArea = stack.get(MiningMadnessDataComponents.AREA_MACHINE_WA);
-                    workingAreaBE.setArea(workArea.getX(), workArea.getZ(), workArea.getY());
+                    workingAreaBE.setArea(workArea.getX(), workArea.getZ(), workArea.getY(), false);
                 }
             }
 

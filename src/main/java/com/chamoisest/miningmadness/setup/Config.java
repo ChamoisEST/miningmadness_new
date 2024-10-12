@@ -35,6 +35,10 @@ public class Config
     public static ModConfigSpec.IntValue INFUSING_STATION_BASE_ENERGY;
     public static ModConfigSpec.IntValue INFUSING_STATION_BASE_ENERGY_PER_TICK;
 
+    public static final String BASE_OTHER_DATA = "base_other_data";
+    public static ModConfigSpec.IntValue QUARRY_BASE_RANGE;
+    public static ModConfigSpec.IntValue QUARRY_BASE_ENERGY_NEEDED_PER_BLOCK;
+
     public static void register(ModContainer mod){
         //registerClientConfigs(mod);
         registerCommonConfigs(mod);
@@ -49,6 +53,7 @@ public class Config
         infusionConfig();
         infusionColors();
         energyConfig();
+        baseOtherConfig();
         mod.registerConfig(ModConfig.Type.COMMON, COMMON_BUILDER.build());
     }
 
@@ -83,10 +88,16 @@ public class Config
 
     private static void energyConfig(){
         COMMON_BUILDER.comment("Machine energy settings").push(ENERGY);
-        BASIC_QUARRY_BASE_ENERGY = COMMON_BUILDER.comment("Basic Quarry base energy capacity.").defineInRange("basic_quarry_base_energy", 10000, 0, 1000000);
-        BASIC_QUARRY_BASE_ENERGY_PER_TICK = COMMON_BUILDER.comment("Basic Quarry base energy usage per tick.").defineInRange("basic_quarry_base_energy_per_tick", 100, 0, 10000);
-        INFUSING_STATION_BASE_ENERGY = COMMON_BUILDER.comment("Infusing Station base energy capacity.").defineInRange("infusing_station_base_energy", 10000, 0, 1000000);
-        INFUSING_STATION_BASE_ENERGY_PER_TICK = COMMON_BUILDER.comment("Infusing Station base energy usage per tick.").defineInRange("infusing_station_base_energy_per_tick", 30, 0, 10000);
+        BASIC_QUARRY_BASE_ENERGY = COMMON_BUILDER.comment("Basic Quarry base energy capacity.").defineInRange("basic_quarry_base_energy", 10000, 1000, 1000000);
+        BASIC_QUARRY_BASE_ENERGY_PER_TICK = COMMON_BUILDER.comment("Basic Quarry base energy usage per tick.").defineInRange("basic_quarry_base_energy_per_tick", 100, 1, 1000);
+        INFUSING_STATION_BASE_ENERGY = COMMON_BUILDER.comment("Infusing Station base energy capacity.").defineInRange("infusing_station_base_energy", 10000, 1000, 1000000);
+        INFUSING_STATION_BASE_ENERGY_PER_TICK = COMMON_BUILDER.comment("Infusing Station base energy usage per tick.").defineInRange("infusing_station_base_energy_per_tick", 30, 1, 1000);
+    }
+
+    private static void baseOtherConfig(){
+        COMMON_BUILDER.comment("Machine other base settings").push(BASE_OTHER_DATA);
+        QUARRY_BASE_RANGE = COMMON_BUILDER.comment("Quarry base range before any infusions.").defineInRange("quarry_base_range", 10, 1, 100);
+        QUARRY_BASE_ENERGY_NEEDED_PER_BLOCK = COMMON_BUILDER.comment("Quarry base energy needed per mined block.").defineInRange("quarry_base_energy_needed_per_block", 2000, 1, 500000);
     }
 
 }

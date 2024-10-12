@@ -1,0 +1,15 @@
+{
+  "type": "miningmadness:infusing",
+  "ingredients": [
+    {
+      "tag": "miningmadness:infusion/infusable"
+    },
+    {
+      "item": "minecraft:lapis_block"
+    }
+  ],
+  "output_infusion": {
+      "miningmadness:fortune": 45
+  },
+  "energy_used": 32000
+}

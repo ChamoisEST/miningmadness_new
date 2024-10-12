@@ -4,6 +4,9 @@ import com.chamoisest.miningmadness.common.blockentities.interfaces.StatusBE;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.inventory.ContainerData;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class StatusData implements ContainerData {
     private final StatusBE blockEntity;
     public static int DATA_SLOTS = 2;
@@ -47,27 +50,16 @@ public class StatusData implements ContainerData {
         INACTIVE,
         NOT_ENOUGH_FE,
         CANT_GAIN_INFUSION,
-        CONFLICTING_INFUSION;
+        CONFLICTING_INFUSION,
+        FINISHED,
+        INVERTORY_FULL;
 
         public int getNumericalValue() {
-            return switch (this) {
-                case ACTIVE -> 0;
-                case INACTIVE -> 1;
-                case NOT_ENOUGH_FE -> 2;
-                case CANT_GAIN_INFUSION -> 3;
-                case CONFLICTING_INFUSION -> 4;
-            };
+            return this.ordinal();
         }
 
         public static Status getEnumValue(int value) {
-            return switch (value) {
-                case 0 -> ACTIVE;
-                case 1 -> INACTIVE;
-                case 2 -> NOT_ENOUGH_FE;
-                case 3 -> CANT_GAIN_INFUSION;
-                case 4 -> CONFLICTING_INFUSION;
-                default -> throw new IllegalStateException("Unexpected value: " + value);
-            };
+            return values()[value];
         }
 
         public Component getTranslated() {
@@ -77,6 +69,8 @@ public class StatusData implements ContainerData {
                 case NOT_ENOUGH_FE -> Component.translatable("miningmadness.status.not_enough_fe");
                 case CANT_GAIN_INFUSION -> Component.translatable("miningmadness.status.cant_gain_infusion");
                 case CONFLICTING_INFUSION -> Component.translatable("miningmadness.status.conflicting_infusion");
+                case FINISHED -> Component.translatable("miningmadness.status.finished");
+                case INVERTORY_FULL -> Component.translatable("miningmadness.status.invertory_full");
             };
         }
 
@@ -84,8 +78,17 @@ public class StatusData implements ContainerData {
             return switch (this){
                 case ACTIVE -> 0xff4CFF00;
                 case INACTIVE -> 0xff7F0000;
-                case NOT_ENOUGH_FE, CANT_GAIN_INFUSION, CONFLICTING_INFUSION -> 0xffFFD800;
+                case NOT_ENOUGH_FE, CANT_GAIN_INFUSION, CONFLICTING_INFUSION, FINISHED, INVERTORY_FULL -> 0xffFFD800;
             };
+        }
+
+        public static List<Status> getActiveStatuses(){
+            List<Status> activeStatuses = new ArrayList<>();
+            activeStatuses.add(Status.ACTIVE);
+            activeStatuses.add(Status.NOT_ENOUGH_FE);
+            activeStatuses.add(Status.FINISHED);
+            activeStatuses.add(Status.INVERTORY_FULL);
+            return activeStatuses;
         }
     }
 }

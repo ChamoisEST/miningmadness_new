@@ -1,0 +1,18 @@
+{
+  "type": "miningmadness:infusing",
+  "ingredients": [
+    {
+      "tag": "miningmadness:infusion/infusable"
+    },
+    {
+      "item": "minecraft:amethyst_shard"
+    },
+    {
+      "item": "minecraft:light_blue_dye"
+    }
+  ],
+  "output_infusion": {
+      "miningmadness:range": 10
+  },
+  "energy_used": 6500
+}

@@ -7,15 +7,9 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtUtils;
-import net.minecraft.network.Connection;
-import net.minecraft.network.protocol.Packet;
-import net.minecraft.network.protocol.game.ClientGamePacketListener;
-import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
-import org.jetbrains.annotations.Nullable;
 
 public abstract class WorkingAreaBE extends BaseBE{
     protected AABB workingArea;
@@ -48,29 +42,67 @@ public abstract class WorkingAreaBE extends BaseBE{
 
     }
 
+    protected abstract void resetMachineSettings();
+
     protected void setMaxArea(int maxWidth, int maxHeight) {
         this.maxAreaWidth = maxWidth;
         this.maxAreaHeight = maxHeight;
         this.maxAreaDepth = getBlockPos().getY() + 64 + this.offset.getY();
+
+        if(this.areaWidth != 0 && this.areaHeight != 0 && this.areaDepth != 0) {
+            setArea(this.areaWidth, this.areaHeight, this.areaDepth, true);
+        }
     }
 
     protected void setMaxArea(int maxWidth, int maxHeight, int maxDepth){
         this.maxAreaWidth = maxWidth;
         this.maxAreaHeight = maxHeight;
         this.maxAreaDepth = maxDepth;
+
+        if(this.areaWidth != 0 && this.areaHeight != 0 && this.areaDepth != 0) {
+            setArea(this.areaWidth, this.areaHeight, this.areaDepth, true);
+        }
     }
 
-    public void setArea(int areaWidth, int areaHeight, int areaDepth) {
-        this.areaWidth = areaWidth;
-        this.areaHeight = areaHeight;
-        this.areaDepth = areaDepth;
+    public void setArea(int areaWidth, int areaHeight, int areaDepth, boolean checkMaxMin) {
+        if(checkMaxMin) {
+            areaWidth = Math.max(areaWidth, 1);
+            areaHeight = Math.max(areaHeight, 1);
+            areaDepth = Math.max(areaDepth, 1);
 
-        markDirty();
+            this.areaWidth = Math.min(areaWidth, maxAreaWidth);
+            this.areaHeight = Math.min(areaHeight, maxAreaHeight);
+            this.areaDepth = Math.min(areaDepth, maxAreaDepth);
+        }else{
+            this.areaWidth = areaWidth;
+            this.areaHeight = areaHeight;
+            this.areaDepth = areaDepth;
+        }
+
+        setUpdated();
     }
 
-    public void setOffset(BlockPos offset) {
-        this.offset = offset;
+    public void setOffset(BlockPos offset, boolean checkMaxMin) {
+        if(checkMaxMin) {
+            int offX = Math.max(offset.getX(), -areaWidth);
+            int offY = Math.max(offset.getY(), -areaDepth);
+            int offZ = Math.max(offset.getZ(), -areaHeight);
 
+            offX = Math.min(offX, areaWidth);
+            offY = Math.min(offY, areaDepth);
+            offZ = Math.min(offZ, areaHeight);
+
+            this.offset = new BlockPos(offX, offY, offZ);
+
+        }else{
+            this.offset = offset;
+        }
+        setUpdated();
+    }
+
+    protected void setUpdated(){
+        initArea();
+        resetMachineSettings();
         markDirty();
     }
 
@@ -126,6 +158,11 @@ public abstract class WorkingAreaBE extends BaseBE{
 
     public AABB getWorkingArea() {
         return this.workingArea;
+    }
+
+    public AABB getAbsoluteWorkingArea(){
+        return new AABB(getBlockPos().getX() + workingArea.minX, getBlockPos().getY() + workingArea.minY, getBlockPos().getZ() + workingArea.minZ,
+                getBlockPos().getX() + workingArea.maxX - 1, getBlockPos().getY() + workingArea.maxY - 1, getBlockPos().getZ() + workingArea.maxZ - 1);
     }
 
     public boolean getDisplayArea() {

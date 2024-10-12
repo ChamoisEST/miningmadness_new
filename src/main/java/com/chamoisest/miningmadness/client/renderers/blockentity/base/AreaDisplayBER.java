@@ -19,6 +19,7 @@ public abstract class AreaDisplayBER<T extends WorkingAreaBE> implements BlockEn
     public void render(WorkingAreaBE blockEntity, float partialTick, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, int packedOverlay) {
         if(blockEntity.getDisplayArea()){
             AABB aabb = blockEntity.getWorkingArea();
+
             Color color = new Color(0.2F, 0.57F, 0.92F, 0.175F);
             Color lineColor = new Color(0.2F, 0.57F, 0.92F, 1f);
 

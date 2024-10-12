@@ -1,0 +1,15 @@
+{
+  "type": "miningmadness:infusing",
+  "ingredients": [
+    {
+      "tag": "miningmadness:infusion/infusable"
+    },
+    {
+      "item": "minecraft:ender_pearl"
+    }
+  ],
+  "output_infusion": {
+      "miningmadness:range": 50
+  },
+  "energy_used": 15000
+}

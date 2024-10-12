@@ -10,6 +10,10 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.neoforged.neoforge.client.gui.widget.ExtendedButton;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 public class StatusButton extends ExtendedButton {
 
     private final ResourceLocation elements = ResourceLocation.fromNamespaceAndPath(MiningMadness.MODID, "textures/gui/elements/gui_elements.png");
@@ -29,7 +33,7 @@ public class StatusButton extends ExtendedButton {
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
         RenderSystem.setShaderTexture(0, elements);
 
-        if(this.menu.getStatusData().getStatus() == StatusData.Status.ACTIVE){
+        if(StatusData.Status.getActiveStatuses().contains(this.menu.getStatusData().getStatus())){
             guiGraphics.blit(elements, getX(), getY(), 144, 0, width, height, 256, 256);
         }else{
             guiGraphics.blit(elements, getX(), getY(), 128, 0, width, height, 256, 256);

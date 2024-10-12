@@ -31,7 +31,7 @@ public class SpeedInfusion extends Infusion {
 
     @Override
     public int getMaxTier() {
-        return 3;
+        return 4;
     }
 
     @Override

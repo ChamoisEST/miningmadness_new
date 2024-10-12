@@ -43,11 +43,6 @@ public abstract class BaseScreen<T extends BaseMenu> extends AbstractContainerSc
     }
 
     @Override
-    protected void containerTick() {
-
-    }
-
-    @Override
     protected void renderBg(GuiGraphics guiGraphics, float partialTick, int mouseX, int mouseY) {
         int relX = (this.width - this.imageWidth) / 2;
         int relY = (this.height - this.imageHeight) / 2;

@@ -44,11 +44,11 @@ public abstract class BaseBE extends BlockEntity {
 
     public void tickServer(){
         forceHandleTicks();
-        if(needSyncAll){
+        if(this.level != null && needSyncAll){
             syncAll();
         }
 
-        if(needInfusionUpdate){
+        if(this.level != null && needInfusionUpdate){
             doInfusionCalculations();
         }
 

@@ -14,6 +14,7 @@
   "miningmadness.status.not_enough_fe": "Not enough energy!",
   "miningmadness.status.cant_gain_infusion": "Can't gain new infusion from recipe!",
   "miningmadness.status.conflicting_infusion": "Conflicting infusions!",
+  "miningmadness.status.finished": "Finished",
 
   "miningmadness.redstone_status.high": "High",
   "miningmadness.redstone_status.low": "Low",
@@ -47,5 +48,6 @@
   "miningmadness.jei.infusing_title": "Infusion",
   "miningmadness.gui.size": "Size",
   "miningmadness.gui.offset": "Off",
-  "miningmadness.gui.range_projector.not_connected": "No machine connected!"
+  "miningmadness.gui.range_projector.not_connected": "No machine connected!",
+  "miningmadness.status.invertory_full": "Inventory is full!"
 }

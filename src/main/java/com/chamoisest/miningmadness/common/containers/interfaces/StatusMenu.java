@@ -6,7 +6,7 @@ public interface StatusMenu {
     StatusData getStatusData();
 
     default StatusData.Status getNewStatus(){
-        if(getStatusData().getStatus() == StatusData.Status.ACTIVE) return StatusData.Status.INACTIVE;
+        if(StatusData.Status.getActiveStatuses().contains(getStatusData().getStatus())) return StatusData.Status.INACTIVE;
         else return StatusData.Status.ACTIVE;
     }
 }

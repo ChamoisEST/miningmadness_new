@@ -31,12 +31,12 @@ public class RangeButtonPacket {
                 WorkingAreaBE be = rangeProjectorBE.getConnectedBE();
                 if(be != null){
                     switch(AreaPosEnum.values()[payload.areaPosEnumInt()]){
-                        case RAD_X -> be.setArea(be.getAreaWidth(), getNewValue(be.getAreaHeight(), be.getAreaMaxHeight(), payload.buttonTypeEnumInt(), AreaPosEnum.RAD_X), be.getAreaDepth());
-                        case RAD_Y -> be.setArea(be.getAreaWidth(), be.getAreaHeight(), getNewValue(be.getAreaDepth(), be.getAreaMaxDepth(), payload.buttonTypeEnumInt(), AreaPosEnum.RAD_Y));
-                        case RAD_Z -> be.setArea(getNewValue(be.getAreaWidth(), be.getAreaMaxWidth(), payload.buttonTypeEnumInt(), AreaPosEnum.RAD_Z), be.getAreaHeight(), be.getAreaDepth());
-                        case OFF_X -> be.setOffset(new BlockPos(getNewValue(be.getOffset().getX(), be.getAreaMaxWidth(), payload.buttonTypeEnumInt(), AreaPosEnum.OFF_X), be.getOffset().getY(), be.getOffset().getZ()));
-                        case OFF_Y -> be.setOffset(new BlockPos(be.getOffset().getX(), getNewValue(be.getOffset().getY(), be.getAreaMaxDepth(), payload.buttonTypeEnumInt(), AreaPosEnum.OFF_Y), be.getOffset().getZ()));
-                        case OFF_Z -> be.setOffset(new BlockPos(be.getOffset().getX(), be.getOffset().getY(), getNewValue(be.getOffset().getZ(), be.getAreaMaxHeight(), payload.buttonTypeEnumInt(), AreaPosEnum.OFF_Z)));
+                        case RAD_X -> be.setArea(be.getAreaWidth(), getNewValue(be.getAreaHeight(), payload.buttonTypeEnumInt()), be.getAreaDepth(), true);
+                        case RAD_Y -> be.setArea(be.getAreaWidth(), be.getAreaHeight(), getNewValue(be.getAreaDepth(),payload.buttonTypeEnumInt()), true);
+                        case RAD_Z -> be.setArea(getNewValue(be.getAreaWidth(), payload.buttonTypeEnumInt()), be.getAreaHeight(), be.getAreaDepth(), true);
+                        case OFF_X -> be.setOffset(new BlockPos(getNewValue(be.getOffset().getX(), payload.buttonTypeEnumInt()), be.getOffset().getY(), be.getOffset().getZ()), true);
+                        case OFF_Y -> be.setOffset(new BlockPos(be.getOffset().getX(), getNewValue(be.getOffset().getY(), payload.buttonTypeEnumInt()), be.getOffset().getZ()), true);
+                        case OFF_Z -> be.setOffset(new BlockPos(be.getOffset().getX(), be.getOffset().getY(), getNewValue(be.getOffset().getZ(), payload.buttonTypeEnumInt())), true);
                     }
 
                     rangeProjectorBE.needsSync = true;
@@ -45,15 +45,9 @@ public class RangeButtonPacket {
         });
     }
 
-    public int getNewValue(int value, int maxValue, int btnTypeOrdinal, AreaPosEnum areaPosEnum){
+    public int getNewValue(int value, int btnTypeOrdinal){
         RangeEditButton.RangeEditButtonType type = RangeEditButton.RangeEditButtonType.values()[btnTypeOrdinal];
-        AreaPosEnum[] minOneTypes = {AreaPosEnum.RAD_X, AreaPosEnum.RAD_Y, AreaPosEnum.RAD_Z};
-        int newValue = value + type.getChangeValue();
 
-        if(Arrays.stream(minOneTypes).anyMatch(posEnum -> posEnum == areaPosEnum) && newValue < 1) return 1;
-        if(newValue >= maxValue) return maxValue;
-        if(newValue < -maxValue) return -maxValue;
-
-        return newValue;
+        return value + type.getChangeValue();
     }
 }
