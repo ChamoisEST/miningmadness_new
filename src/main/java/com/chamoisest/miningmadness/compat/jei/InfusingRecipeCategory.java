@@ -41,26 +41,39 @@ import java.util.stream.Stream;
 
 public class InfusingRecipeCategory implements IRecipeCategory<InfusingRecipe> {
 
+    public enum InfusingCategoryType{
+        INFUSION, INFUSION_CRAFTING
+    }
+
     public static final RecipeType<InfusingRecipe> TYPE = RecipeType.create(MiningMadness.MODID, "infusing", InfusingRecipe.class);
+    public static final RecipeType<InfusingRecipe> TYPE_CRAFTING = RecipeType.create(MiningMadness.MODID, "infusion_crafting", InfusingRecipe.class);
+
     public static final ResourceLocation GUI_TEXTURE = ResourceLocation.fromNamespaceAndPath(MiningMadness.MODID, "textures/gui/infusing_station_gui.png");
     private static final String INFUSION_SLOT_NAME = "infusion_main_slot";
 
     private final Component title;
     private final IDrawable background;
     private final IDrawable icon;
-    public InfusingRecipeCategory(IGuiHelper helper) {
-        this.title = Component.translatable("miningmadness.jei.infusing_title");
+
+    private final InfusingCategoryType type;
+
+    public InfusingRecipeCategory(IGuiHelper helper, InfusingCategoryType type) {
+        if(type == InfusingCategoryType.INFUSION_CRAFTING) {
+            this.title = Component.translatable("miningmadness.jei.infusion_crafting_title");
+        }else{
+            this.title = Component.translatable("miningmadness.jei.infusing_title");
+        }
         this.background = helper.createDrawable(GUI_TEXTURE, 4, 4, 167, 89);
         this.icon = helper.createDrawableItemStack(new ItemStack(Registration.INFUSING_STATION.get()));
+        this.type = type;
     }
 
     public ItemStack focusedStack = ItemStack.EMPTY;
     public Map<ResourceLocation, Integer> outputInfusions = new HashMap<>();
-    public int energyNeeded = 0;
 
     @Override
     public RecipeType<InfusingRecipe> getRecipeType() {
-        return TYPE;
+        return (type == InfusingCategoryType.INFUSION) ? TYPE : TYPE_CRAFTING;
     }
 
     @Override
@@ -86,7 +99,7 @@ public class InfusingRecipeCategory implements IRecipeCategory<InfusingRecipe> {
         InfusionBars infusionBars = new InfusionBars(119, 16, font, currentDisplayedStack, recipe.getOutputInfusions());
         infusionBars.render(guiGraphics, (int)mouseX, (int)mouseY, 0);
 
-        EnergyArea energyArea = new EnergyArea(149, 13, font, energyNeeded);
+        EnergyArea energyArea = new EnergyArea(149, 13, font, recipe.getEnergyUsed());
         energyArea.render(guiGraphics, (int)mouseX, (int)mouseY, 0);
     }
 
@@ -128,6 +141,8 @@ public class InfusingRecipeCategory implements IRecipeCategory<InfusingRecipe> {
     public Ingredient getRealInputIngredients(InfusingRecipe recipe) {
         List<ItemStack> allowedItems = new ArrayList<>();
         ItemStack[] inputStacks = recipe.getIngredients().getFirst().getItems();
+        ItemStack outputFocusStack = ItemStack.EMPTY;
+
         for(ItemStack stack : inputStacks) {
             if(stack.getItem() instanceof GemOfFocusItem){
                 ItemStack checkStack = new ItemStack(Registration.INFUSING_STATION.get());
@@ -143,8 +158,10 @@ public class InfusingRecipeCategory implements IRecipeCategory<InfusingRecipe> {
 
     @Override
     public void setRecipe(IRecipeLayoutBuilder builder, InfusingRecipe recipe, IFocusGroup focuses) {
+        if(type == InfusingCategoryType.INFUSION_CRAFTING && !recipe.getOutputInfusions().isEmpty()) return;
+        if(type == InfusingCategoryType.INFUSION && recipe.getOutputInfusions().isEmpty()) return;
+
         this.outputInfusions = recipe.getOutputInfusions();
-        this.energyNeeded = recipe.getEnergyUsed();
 
         Stream<IFocus<ItemStack>> focusStream = focuses.getItemStackFocuses();
         Optional<IFocus<ItemStack>> focus = focusStream.findFirst();
@@ -152,12 +169,13 @@ public class InfusingRecipeCategory implements IRecipeCategory<InfusingRecipe> {
 
         NonNullList<Ingredient> ingredients = recipe.getIngredients();
         Ingredient realInputIngredient = getRealInputIngredients(recipe);
+        IRecipeSlotBuilder infusionSlot = builder.addSlot(RecipeIngredientRole.INPUT, 40, 37).addIngredients(realInputIngredient).setSlotName(INFUSION_SLOT_NAME);
 
         int slot = 0;
         for(int i = 0; i < ingredients.size(); i++) {
-            if(slot == 0){
-
-                builder.addSlot(RecipeIngredientRole.INPUT, 40, 37).addIngredients(realInputIngredient).setSlotName(INFUSION_SLOT_NAME);
+            if(slot == 0) {
+                slot++;
+                continue;
             }
             else{
                 if(slot < ingredients.size()){
@@ -172,15 +190,15 @@ public class InfusingRecipeCategory implements IRecipeCategory<InfusingRecipe> {
         }
 
         ItemStack output = recipe.getOutput();
-        IRecipeSlotBuilder outputSlotBuilder = builder.addSlot(RecipeIngredientRole.OUTPUT, 85, 62);
+        IRecipeSlotBuilder outputSlot = builder.addSlot(RecipeIngredientRole.OUTPUT, 85, 62);
+
         if(output == ItemStack.EMPTY){
+            outputSlot.addIngredients(realInputIngredient);
             if(this.focusedStack != ItemStack.EMPTY && this.focusedStack.is(MiningMadnessTags.Items.INFUSABLE)){
-                outputSlotBuilder.addItemStack(new ItemStack(this.focusedStack.getItem()));
-            }else{
-                outputSlotBuilder.addIngredients(realInputIngredient);
+                builder.createFocusLink(infusionSlot, outputSlot);
             }
         }else{
-            outputSlotBuilder.addItemStack(output);
+            outputSlot.addItemStack(output);
         }
     }
 

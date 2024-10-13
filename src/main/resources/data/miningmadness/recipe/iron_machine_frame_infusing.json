@@ -1,0 +1,26 @@
+{
+  "type": "miningmadness:infusing",
+  "ingredients": [
+    {
+      "item": "miningmadness:copper_machine_frame"
+    },
+    {
+      "item": "minecraft:iron_ingot"
+    },
+    {
+      "item": "minecraft:iron_ingot"
+    },
+    {
+      "item": "minecraft:iron_ingot"
+    },
+    {
+      "item": "minecraft:iron_ingot"
+    }
+  ],
+  "output": {
+    "count": 1,
+    "id": "miningmadness:iron_machine_frame"
+  },
+  "output_infusion": {},
+  "energy_used": 25000
+}

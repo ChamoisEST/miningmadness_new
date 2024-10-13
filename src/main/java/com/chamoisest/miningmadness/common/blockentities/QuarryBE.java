@@ -5,6 +5,7 @@ import com.chamoisest.miningmadness.common.blockentities.base.WorkingAreaBE;
 import com.chamoisest.miningmadness.common.blockentities.data.RedstoneData;
 import com.chamoisest.miningmadness.common.blockentities.data.StatusData;
 import com.chamoisest.miningmadness.common.blockentities.interfaces.*;
+import com.chamoisest.miningmadness.common.blocks.QuarryBlock;
 import com.chamoisest.miningmadness.common.capabilities.AdaptedEnergyStorage;
 import com.chamoisest.miningmadness.common.capabilities.CombinedItemHandler;
 import com.chamoisest.miningmadness.common.capabilities.infusion.InfusionStorage;
@@ -87,7 +88,6 @@ public class QuarryBE extends WorkingAreaBE implements EnergyHandlerBE, ItemHand
     }
 
     public void handleTicks(){
-        System.out.println(energyNeeded);
         if(currentPos == null) currentPos = resetPosToStart();
 
         if(hasEnoughEnergy(energyNeeded)){
@@ -469,10 +469,23 @@ public class QuarryBE extends WorkingAreaBE implements EnergyHandlerBE, ItemHand
         return status;
     }
 
+    public void updateLit(){
+        if(level != null) {
+            BlockState newState = this.getBlockState();
+            if (status == StatusData.Status.ACTIVE) {
+                newState = newState.setValue(QuarryBlock.LIT, true);
+            } else {
+                newState = newState.setValue(QuarryBlock.LIT, false);
+            }
+            level.setBlock(getBlockPos(), newState, 3);
+        }
+    }
+
     public void setStatus(StatusData.Status status){
         if(status != getStatus()) {
             if(getStatus() == StatusData.Status.FINISHED) resetMachineSettings();
             this.status = status;
+            updateLit();
             markDirty();
         }
     }

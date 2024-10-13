@@ -1,0 +1,15 @@
+{
+  "type": "miningmadness:infusing",
+  "ingredients": [
+    {
+      "tag": "miningmadness:infusion/infusable"
+    },
+    {
+      "item": "miningmadness:sugar_block"
+    }
+  ],
+  "output_infusion": {
+      "miningmadness:speed": 45
+  },
+  "energy_used": 32000
+}

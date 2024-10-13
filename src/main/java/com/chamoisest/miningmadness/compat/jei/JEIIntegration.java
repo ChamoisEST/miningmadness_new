@@ -27,8 +27,10 @@ public class JEIIntegration implements IModPlugin {
     public void registerCategories(IRecipeCategoryRegistration registration) {
         IGuiHelper guiHelper = registration.getJeiHelpers().getGuiHelper();
         registration.addRecipeCategories(
-                new InfusingRecipeCategory(guiHelper)
+                new InfusingRecipeCategory(guiHelper, InfusingRecipeCategory.InfusingCategoryType.INFUSION),
+                new InfusingRecipeCategory(guiHelper, InfusingRecipeCategory.InfusingCategoryType.INFUSION_CRAFTING)
         );
+
     }
 
     @Override
@@ -38,6 +40,7 @@ public class JEIIntegration implements IModPlugin {
         List<InfusingRecipe> infusingRecipes = recipeManager.getAllRecipesFor(Registration.INFUSING.get()).stream().map(RecipeHolder::value).toList();
 
         registration.addRecipes(InfusingRecipeCategory.TYPE, infusingRecipes);
+        registration.addRecipes(InfusingRecipeCategory.TYPE_CRAFTING, infusingRecipes);
     }
 
 

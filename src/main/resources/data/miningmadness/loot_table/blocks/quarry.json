@@ -12,11 +12,11 @@
               "source": "block_entity"
             }
           ],
-          "name": "miningmadness:basic_quarry"
+          "name": "miningmadness:quarry"
         }
       ],
       "rolls": 1.0
     }
   ],
-  "random_sequence": "miningmadness:blocks/basic_quarry"
+  "random_sequence": "miningmadness:blocks/quarry"
 }

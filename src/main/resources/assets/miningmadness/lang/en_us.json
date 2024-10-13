@@ -2,9 +2,11 @@
   "block.miningmadness.quarry": "Quarry",
   "block.miningmadness.infusing_station": "Infusing Station",
   "block.miningmadness.range_projector": "Range Projector",
+  "block.miningmadness.sugar_block": "Block of Sugar",
 
   "item.miningmadness.gem_of_focus": "Gem of Focus",
   "item.miningmadness.copper_machine_frame": "Copper Machine Frame",
+  "item.miningmadness.iron_machine_frame": "Iron Machine Frame",
 
   "miningmadness.quarry_menu": "Basic Quarry",
 
@@ -49,5 +51,6 @@
   "miningmadness.gui.size": "Size",
   "miningmadness.gui.offset": "Off",
   "miningmadness.gui.range_projector.not_connected": "No machine connected!",
-  "miningmadness.status.invertory_full": "Inventory is full!"
+  "miningmadness.status.invertory_full": "Inventory is full!",
+  "miningmadness.jei.infusion_crafting_title": "Infusion Crafting"
 }

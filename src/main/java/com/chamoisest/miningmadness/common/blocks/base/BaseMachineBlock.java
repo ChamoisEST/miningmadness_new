@@ -146,11 +146,13 @@ public abstract class BaseMachineBlock extends Block implements EntityBlock {
 
     @Override
     protected void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean movedByPiston) {
-        BlockEntity blockEntity = level.getBlockEntity(pos);
-        if(blockEntity instanceof ItemHandlerBE handlerBE) {
-            IItemHandler itemHandler = handlerBE.getItemHandler();
-            for(int i = 0; i < itemHandler.getSlots(); i++) {
-                Containers.dropItemStack(level, pos.getX(), pos.getY(), pos.getZ(), itemHandler.getStackInSlot(i));
+        if(newState.getBlock() != this) {
+            BlockEntity blockEntity = level.getBlockEntity(pos);
+            if (blockEntity instanceof ItemHandlerBE handlerBE) {
+                IItemHandler itemHandler = handlerBE.getItemHandler();
+                for (int i = 0; i < itemHandler.getSlots(); i++) {
+                    Containers.dropItemStack(level, pos.getX(), pos.getY(), pos.getZ(), itemHandler.getStackInSlot(i));
+                }
             }
         }
         super.onRemove(state, level, pos, newState, movedByPiston);

@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "group": "miningmadness",
+  "key": {
+    "s": {
+      "item": "minecraft:sugar"
+    }
+  },
+  "pattern": [
+    "sss",
+    "sss",
+    "sss"
+  ],
+  "result": {
+    "count": 1,
+    "id": "miningmadness:sugar_block"
+  }
+}

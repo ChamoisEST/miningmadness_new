@@ -28,7 +28,9 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.neoforged.neoforge.attachment.AttachmentType;
 import net.neoforged.neoforge.common.extensions.IMenuTypeExtension;
 import net.neoforged.neoforge.registries.DeferredBlock;
@@ -55,6 +57,11 @@ public class Registration {
             InfusingStationBlock::new);
     public static final DeferredBlock<RangeProjectorBlock> RANGE_PROJECTOR = registerMachineBlock("range_projector",
             RangeProjectorBlock::new);
+    public static final DeferredBlock<Block> SUGAR_BLOCK = registerBlock("sugar_block", () -> new Block(
+            BlockBehaviour.Properties.of()
+                    .strength(0.5F)
+                    .sound(SoundType.POWDER_SNOW)
+    ));
 
     //BLOCK ENTITIES
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<QuarryBE>> QUARRY_BE = BLOCK_ENTITIES.register("quarry_be",
@@ -67,6 +74,7 @@ public class Registration {
     //ITEMS
     public static final Supplier<GemOfFocusItem> GEM_OF_FOCUS = ITEMS.register("gem_of_focus", GemOfFocusItem::new);
     public static final Supplier<Item> COPPER_MACHINE_FRAME = ITEMS.registerSimpleItem("copper_machine_frame");
+    public static final Supplier<Item> IRON_MACHINE_FRAME = ITEMS.registerSimpleItem("iron_machine_frame");
 
     //INFUSIONS
     public static final DeferredHolder<Infusion, Infusion> EFFICIENCY = INFUSIONS.register("efficiency", EfficiencyInfusion::new);

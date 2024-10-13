@@ -28,8 +28,8 @@ public class EnergySyncToClientPacket {
             AbstractContainerMenu menu = sender.containerMenu;
 
             if(menu instanceof BaseMenu baseMenu) {
-                Level level = Minecraft.getInstance().level;
-                if(level != null) {
+                Level level = sender.level();
+                if(level.isClientSide()) {
                     BlockEntity menuBlockEntity = baseMenu.getBlockEntity();
                     BlockEntity senderBlockEntity = level.getBlockEntity(payload.pos());
 

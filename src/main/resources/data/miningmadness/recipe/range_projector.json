@@ -1,0 +1,28 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "group": "miningmadness",
+  "key": {
+    "b": {
+      "item": "minecraft:iron_block"
+    },
+    "i": {
+      "item": "minecraft:iron_ingot"
+    },
+    "r": {
+      "item": "minecraft:redstone"
+    },
+    "g": {
+      "item": "minecraft:glass"
+    }
+  },
+  "pattern": [
+    " r ",
+    "igi",
+    "ibi"
+  ],
+  "result": {
+    "count": 1,
+    "id": "miningmadness:range_projector"
+  }
+}
