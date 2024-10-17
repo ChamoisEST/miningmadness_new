@@ -15,6 +15,8 @@ public class AdaptedEnergyStorage implements IEnergyStorage, INBTSerializable<Co
     public int energy;
     public int capacity;
     public int usagePerTick = 0;
+    public int energyPerOp = 0;
+    public int energyPerOpLeft = 0;
 
     public AdaptedEnergyStorage(int capacity, int baseUsagePerTick, EnergyHandlerBE energyHandlerBE) {
         this.energyHandlerBE = energyHandlerBE;
@@ -73,17 +75,27 @@ public class AdaptedEnergyStorage implements IEnergyStorage, INBTSerializable<Co
     public void setEnergy(int energy) {
         this.energy = energy;
     }
-
     public void setCapacity(int capacity) {
         this.capacity = capacity;
     }
-
     public void setUsagePerTick(int usagePerTick) {
         this.usagePerTick = usagePerTick;
+    }
+    public void setEnergyPerOp(int energyPerOp) {
+        this.energyPerOp = energyPerOp;
+    }
+    public void setEnergyPerOpLeft(int energyPerOpLeft) {
+        this.energyPerOpLeft = energyPerOpLeft;
     }
 
     public int getUsagePerTick() {
         return usagePerTick;
+    }
+    public int getEnergyPerOp() {
+        return energyPerOp;
+    }
+    public int getEnergyPerOpLeft() {
+        return energyPerOpLeft;
     }
 
     public void extractUsagePerTick() {

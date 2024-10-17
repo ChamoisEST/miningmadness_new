@@ -13,7 +13,8 @@ public record EnergySyncToClientPayload(
     BlockPos pos,
     int storedEnergy,
     int energyCapacity,
-    int energyUsage
+    int energyUsage,
+    int energyPerOp
 ) implements CustomPacketPayload {
 
     public static final Type<EnergySyncToClientPayload> TYPE = new Type<>(ResourceLocation.fromNamespaceAndPath(MiningMadness.MODID, "energy_sync_to_client_packet"));
@@ -28,6 +29,7 @@ public record EnergySyncToClientPayload(
             ByteBufCodecs.INT, EnergySyncToClientPayload::storedEnergy,
             ByteBufCodecs.INT, EnergySyncToClientPayload::energyCapacity,
             ByteBufCodecs.INT, EnergySyncToClientPayload::energyUsage,
+            ByteBufCodecs.INT, EnergySyncToClientPayload::energyPerOp,
             EnergySyncToClientPayload::new
     );
 }

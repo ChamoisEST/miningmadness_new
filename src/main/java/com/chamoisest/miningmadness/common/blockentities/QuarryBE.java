@@ -22,6 +22,8 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtUtils;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.item.ItemStack;
@@ -52,8 +54,6 @@ public class QuarryBE extends WorkingAreaBE implements EnergyHandlerBE, ItemHand
 
     protected BlockPos currentPos = null;
     protected BlockPos lastPos = null;
-    protected int energyNeeded = 0;
-    protected int energyNeededLeft = 0;
 
     protected int fortuneLevel = 0;
     protected boolean silkTouch = false;
@@ -88,12 +88,18 @@ public class QuarryBE extends WorkingAreaBE implements EnergyHandlerBE, ItemHand
     }
 
     public void handleTicks(){
+        if(isInBlackListedDimension()){
+            setStatus(StatusData.Status.BLACKLISTED_DIMENSION);
+            return;
+        }
+
         if(currentPos == null) currentPos = resetPosToStart();
 
-        if(hasEnoughEnergy(energyNeeded)){
-            energyNeededLeft -= getEnergyStorage().getUsagePerTick();
-            getEnergyStorage().extractUsagePerTick();
-            if(energyNeededLeft <= 0){
+        AdaptedEnergyStorage energyStorage = getEnergyStorage();
+        if(hasEnoughEnergy(energyStorage.getEnergyPerOp())){
+            energyStorage.setEnergyPerOpLeft(energyStorage.getEnergyPerOpLeft() - energyStorage.getUsagePerTick());
+            energyStorage.extractUsagePerTick();
+            if(energyStorage.getEnergyPerOpLeft() <= 0){
                 int timesLooped = 0;
                 while(!canMine(currentPos)){
                     updatePos();
@@ -103,7 +109,7 @@ public class QuarryBE extends WorkingAreaBE implements EnergyHandlerBE, ItemHand
                 }
 
                 if(mine()) {
-                    this.energyNeededLeft = energyNeeded;
+                    energyStorage.setEnergyPerOpLeft(energyStorage.getEnergyPerOp());
                     updatePos();
                 }
             }
@@ -177,6 +183,28 @@ public class QuarryBE extends WorkingAreaBE implements EnergyHandlerBE, ItemHand
         }
 
         return tool;
+    }
+
+    protected boolean isInBlackListedDimension(){
+        List<? extends String> blacklist = Config.QUARRY_BLOCKED_DIMENSIONS.get();
+        if(blacklist.isEmpty()) return false;
+
+        assert level != null;
+
+        HolderLookup.Provider provider = level.registryAccess();
+        HolderLookup.RegistryLookup<Level> dimensionLookup = provider.lookupOrThrow(Registries.DIMENSION);
+
+        for(String dimension : blacklist){
+            ResourceLocation loc = ResourceLocation.parse(dimension);
+            ResourceKey<Level> dimensionKey = ResourceKey.create(Registries.DIMENSION, loc);
+            if(dimensionLookup.get(dimensionKey).isPresent()){
+                if(level.dimension().equals(dimensionKey)) return true;
+            }else{
+                throw new IllegalArgumentException("Unknown dimension in config: " + dimension);
+            }
+        }
+
+        return false;
     }
 
     protected boolean canMine(BlockPos pos){
@@ -262,9 +290,9 @@ public class QuarryBE extends WorkingAreaBE implements EnergyHandlerBE, ItemHand
     }
 
     protected void setEnergyNeeded(){
-        this.energyNeeded = calculateEnergyNeededPerBlock();
-        if(this.energyNeededLeft <= 0) {
-            this.energyNeededLeft = energyNeeded;
+        getEnergyStorage().setEnergyPerOp(calculateEnergyNeededPerBlock());
+        if(getEnergyStorage().getEnergyPerOpLeft() <= 0) {
+            getEnergyStorage().setEnergyPerOpLeft(getEnergyStorage().getEnergyPerOp());
         }
     }
 
@@ -274,7 +302,7 @@ public class QuarryBE extends WorkingAreaBE implements EnergyHandlerBE, ItemHand
         lastPos = null;
         layerFirstPos = null;
         layerFirstDirection = null;
-        energyNeededLeft = 0;
+        getEnergyStorage().setEnergyPerOpLeft(0);
     }
 
     @Override
@@ -449,12 +477,12 @@ public class QuarryBE extends WorkingAreaBE implements EnergyHandlerBE, ItemHand
 
     @Override
     public int getBaseEnergyCapacity() {
-        return Config.BASIC_QUARRY_BASE_ENERGY.get();
+        return Config.QUARRY_BASE_ENERGY.get();
     }
 
     @Override
     public int getBaseEnergyUsagePerTick() {
-        return Config.BASIC_QUARRY_BASE_ENERGY_PER_TICK.get();
+        return Config.QUARRY_BASE_ENERGY_PER_TICK.get();
     }
 
     public int getBaseRange(){

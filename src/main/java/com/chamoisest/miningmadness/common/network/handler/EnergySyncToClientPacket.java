@@ -39,6 +39,7 @@ public class EnergySyncToClientPacket {
                         storage.setEnergy(payload.storedEnergy());
                         storage.setCapacity(payload.energyCapacity());
                         storage.setUsagePerTick(payload.energyUsage());
+                        storage.setEnergyPerOp(payload.energyPerOp());
 
                     }
                 }

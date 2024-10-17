@@ -28,14 +28,14 @@ public class PacketUtil {
         }
     }
 
-    public static void syncEnergyStorage(Level level, BlockPos pos, int storedEnergy, int energyCapacity, int energyUsage){
+    public static void syncEnergyStorage(Level level, BlockPos pos, int storedEnergy, int energyCapacity, int energyUsage, int energyPerOp){
         if(level != null && !level.isClientSide()){
             ServerLevel serverLevel = (ServerLevel) level;
 
             PacketDistributor.sendToPlayersTrackingChunk(
                     serverLevel,
                     level.getChunk(pos).getPos(),
-                    new EnergySyncToClientPayload(pos, storedEnergy, energyCapacity, energyUsage)
+                    new EnergySyncToClientPayload(pos, storedEnergy, energyCapacity, energyUsage, energyPerOp)
             );
         }
     }

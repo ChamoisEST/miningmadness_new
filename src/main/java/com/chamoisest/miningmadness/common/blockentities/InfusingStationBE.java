@@ -47,8 +47,6 @@ public class InfusingStationBE extends BaseBE implements EnergyHandlerBE, Redsto
     protected ItemStack recipeResult = ItemStack.EMPTY;
 
     public boolean isInfusing = false;
-    public int recipeEnergyNeededLeft = 0;
-    public int recipeEnergyNeeded = 0;
     public int useItemsInSlotsFlags = 0;
 
     public Map<ResourceLocation, Integer> recipeOutputInfusion = new HashMap<>();
@@ -83,6 +81,7 @@ public class InfusingStationBE extends BaseBE implements EnergyHandlerBE, Redsto
 
         if(infusionDataChanged()){
             this.syncData(BEPacketSyncEnum.INFUSION_CRAFTING);
+            this.syncData(BEPacketSyncEnum.ENERGY);
         }
 
         this.lastTickRecipeHolder = this.recipeHolder;
@@ -92,14 +91,15 @@ public class InfusingStationBE extends BaseBE implements EnergyHandlerBE, Redsto
     public void handleTicks() {
         if(hasRecipe()) {
             if (recipeOutputInfusion.isEmpty() || canGetNewInfusionFromRecipe()) {
-                if (hasEnoughEnergy(this.recipeEnergyNeeded) || isInfusing) {
+                AdaptedEnergyStorage energyStorage = getEnergyStorage();
+                if (hasEnoughEnergy(energyStorage.getEnergyPerOp()) || isInfusing) {
                     isInfusing = true;
                     completingWorkCycle = true;
 
-                    getEnergyStorage().extractUsagePerTick();
-                    this.recipeEnergyNeededLeft -= getEnergyStorage().getUsagePerTick();
+                    energyStorage.extractUsagePerTick();
+                    energyStorage.setEnergyPerOpLeft(energyStorage.getEnergyPerOpLeft() - energyStorage.getUsagePerTick());
 
-                    if (this.recipeEnergyNeededLeft <= 0) {
+                    if (energyStorage.getEnergyPerOpLeft() <= 0) {
                         infuseItem(false);
                         clearRecipeData();
                     } else {
@@ -252,12 +252,12 @@ public class InfusingStationBE extends BaseBE implements EnergyHandlerBE, Redsto
                 this.recipeResult.setCount(1);
             }
 
-            this.recipeEnergyNeeded = calculateRFNeededForRecipe(this.recipeHolder
+            getEnergyStorage().setEnergyPerOp(calculateRFNeededForRecipe(this.recipeHolder
                     .map(RecipeHolder::value)
                     .map(InfusingRecipe::getEnergyUsed)
-                    .orElse(0));
+                    .orElse(0)));
 
-            if(recipeEnergyNeededLeft <= 0) this.recipeEnergyNeededLeft = this.recipeEnergyNeeded;
+            if(getEnergyStorage().getEnergyPerOpLeft() <= 0) getEnergyStorage().setEnergyPerOpLeft(getEnergyStorage().getEnergyPerOp());
 
             this.recipeOutputInfusion = this.recipeHolder
                     .map(RecipeHolder::value)
@@ -285,12 +285,13 @@ public class InfusingStationBE extends BaseBE implements EnergyHandlerBE, Redsto
     private void clearRecipeData(){
         this.recipeHolder = Optional.empty();
         this.recipeResult = ItemStack.EMPTY;
-        this.recipeEnergyNeeded = 0;
-        this.recipeEnergyNeededLeft = 0;
         this.useItemsInSlotsFlags = 0;
         this.isInfusing = false;
         this.completingWorkCycle = false;
         this.recipeOutputInfusion = new HashMap<>();
+
+        getEnergyStorage().setEnergyPerOp(0);
+        getEnergyStorage().setEnergyPerOpLeft(0);
     }
 
     private boolean isConflictingInfusion(Infusion recipeInfusion, ClassToInstanceMap<Infusion> stackInfusionMap){

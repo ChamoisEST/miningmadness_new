@@ -17,6 +17,7 @@
   "miningmadness.status.cant_gain_infusion": "Can't gain new infusion from recipe!",
   "miningmadness.status.conflicting_infusion": "Conflicting infusions!",
   "miningmadness.status.finished": "Finished",
+  "miningmadness.status.invertory_full": "Inventory is full!",
 
   "miningmadness.redstone_status.high": "High",
   "miningmadness.redstone_status.low": "Low",
@@ -48,9 +49,13 @@
   "tooltip.miningmadness.gem_of_focus_description": "Used to infuse an Infusing Station itself.",
 
   "miningmadness.jei.infusing_title": "Infusion",
+  "miningmadness.jei.infusion_crafting_title": "Infusion Crafting",
+
   "miningmadness.gui.size": "Size",
   "miningmadness.gui.offset": "Off",
   "miningmadness.gui.range_projector.not_connected": "No machine connected!",
-  "miningmadness.status.invertory_full": "Inventory is full!",
-  "miningmadness.jei.infusion_crafting_title": "Infusion Crafting"
+  "miningmadness.gui.energy_usage": "Usage/t",
+  "miningmadness.gui.energy_stored": "Stored",
+  "miningmadness.gui.energy_per_op": "Usage/op",
+  "miningmadness.status.blacklisted_dimension": "Blacklisted dimension!"
 }

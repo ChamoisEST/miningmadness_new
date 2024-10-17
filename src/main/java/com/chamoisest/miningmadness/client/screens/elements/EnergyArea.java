@@ -60,11 +60,20 @@ public class EnergyArea extends AbstractWidget {
         String energyStoredText = TextUtil.formatNumber(energyStored);
         String energyCapacityText = TextUtil.formatNumber(energyCapacity);
 
-        component.add(Component.literal(energyStoredText + "/" + energyCapacityText + "FE"));
+        component.add(Component.translatable("miningmadness.gui.energy_stored")
+                .append(Component.literal(": "))
+                .append(Component.literal(energyStoredText + "/" + energyCapacityText + "FE")));
 
         if(!isJEI){
-            int energyUsagePerTick = energyStorage.getUsagePerTick();
-            component.add(Component.literal(energyUsagePerTick + "FE/t"));
+            String energyUsagePerTick = TextUtil.formatNumber(energyStorage.getUsagePerTick());
+            component.add(Component.translatable("miningmadness.gui.energy_usage")
+                    .append(Component.literal(": "))
+                    .append(Component.literal(energyUsagePerTick + "FE/t")));
+
+            String energyPerOp = TextUtil.formatNumber(energyStorage.getEnergyPerOp());
+            component.add(Component.translatable("miningmadness.gui.energy_per_op")
+                    .append(Component.literal(": "))
+                    .append(Component.literal(energyPerOp + "FE")));
         }
 
         return component;

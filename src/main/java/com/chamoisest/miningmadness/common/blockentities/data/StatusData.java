@@ -52,7 +52,8 @@ public class StatusData implements ContainerData {
         CANT_GAIN_INFUSION,
         CONFLICTING_INFUSION,
         FINISHED,
-        INVERTORY_FULL;
+        INVERTORY_FULL,
+        BLACKLISTED_DIMENSION;
 
         public int getNumericalValue() {
             return this.ordinal();
@@ -71,13 +72,14 @@ public class StatusData implements ContainerData {
                 case CONFLICTING_INFUSION -> Component.translatable("miningmadness.status.conflicting_infusion");
                 case FINISHED -> Component.translatable("miningmadness.status.finished");
                 case INVERTORY_FULL -> Component.translatable("miningmadness.status.invertory_full");
+                case BLACKLISTED_DIMENSION -> Component.translatable("miningmadness.status.blacklisted_dimension");
             };
         }
 
         public int getColor() {
             return switch (this){
                 case ACTIVE -> 0xff4CFF00;
-                case INACTIVE -> 0xff7F0000;
+                case INACTIVE, BLACKLISTED_DIMENSION -> 0xff7F0000;
                 case NOT_ENOUGH_FE, CANT_GAIN_INFUSION, CONFLICTING_INFUSION, FINISHED, INVERTORY_FULL -> 0xffFFD800;
             };
         }

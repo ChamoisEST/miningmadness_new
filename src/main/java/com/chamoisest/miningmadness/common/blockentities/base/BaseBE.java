@@ -130,7 +130,7 @@ public abstract class BaseBE extends BlockEntity {
         switch (syncEnum){
             case ENERGY: {
                 if(this instanceof EnergyHandlerBE be){
-                    PacketUtil.syncEnergyStorage(this.level, this.getBlockPos(), be.getStoredEnergy(), be.getEnergyCapacity(), be.getCurrentEnergyUsagePerTick());
+                    PacketUtil.syncEnergyStorage(this.level, this.getBlockPos(), be.getStoredEnergy(), be.getEnergyCapacity(), be.getCurrentEnergyUsagePerTick(), be.getEnergyStorage().getEnergyPerOp());
                 }
             }
             case INFUSION: {
@@ -140,7 +140,7 @@ public abstract class BaseBE extends BlockEntity {
             }
             case INFUSION_CRAFTING: {
                 if(this instanceof InfusingStationBE be){
-                    PacketUtil.syncInfusionCraftingProgress(this.level, this.getBlockPos(), be.recipeEnergyNeeded, be.recipeEnergyNeededLeft, be.useItemsInSlotsFlags, be.recipeOutputInfusion, be.isInfusing);
+                    PacketUtil.syncInfusionCraftingProgress(this.level, this.getBlockPos(), be.getEnergyStorage().getEnergyPerOp(), be.getEnergyStorage().getEnergyPerOpLeft(), be.useItemsInSlotsFlags, be.recipeOutputInfusion, be.isInfusing);
                 }
             }
         }

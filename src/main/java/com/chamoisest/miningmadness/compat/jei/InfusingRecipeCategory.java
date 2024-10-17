@@ -141,7 +141,6 @@ public class InfusingRecipeCategory implements IRecipeCategory<InfusingRecipe> {
     public Ingredient getRealInputIngredients(InfusingRecipe recipe) {
         List<ItemStack> allowedItems = new ArrayList<>();
         ItemStack[] inputStacks = recipe.getIngredients().getFirst().getItems();
-        ItemStack outputFocusStack = ItemStack.EMPTY;
 
         for(ItemStack stack : inputStacks) {
             if(stack.getItem() instanceof GemOfFocusItem){
@@ -157,9 +156,14 @@ public class InfusingRecipeCategory implements IRecipeCategory<InfusingRecipe> {
     }
 
     @Override
+    public boolean isHandled(InfusingRecipe recipe) {
+        if(type == InfusingCategoryType.INFUSION_CRAFTING && !recipe.getOutputInfusions().isEmpty()) return false;
+        if(type == InfusingCategoryType.INFUSION && recipe.getOutputInfusions().isEmpty()) return false;
+        return true;
+    }
+
+    @Override
     public void setRecipe(IRecipeLayoutBuilder builder, InfusingRecipe recipe, IFocusGroup focuses) {
-        if(type == InfusingCategoryType.INFUSION_CRAFTING && !recipe.getOutputInfusions().isEmpty()) return;
-        if(type == InfusingCategoryType.INFUSION && recipe.getOutputInfusions().isEmpty()) return;
 
         this.outputInfusions = recipe.getOutputInfusions();
 
